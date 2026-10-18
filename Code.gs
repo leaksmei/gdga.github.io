@@ -2,10 +2,30 @@ const SHEET_NAME = "Data";
 const FOLDER_ID = "1G2fx6Ko9osMJr6T119qbsJvfsN_ePT-F"; // Folder សម្រាប់ឯកសារចូល (docIn)
 const FOLDER_OUT_ID = "182yZpL15Vkje0UOsHhxeDmIRdbzMwkIm"; // Folder សម្រាប់ឯកសារចេញ (docOut)
 
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('ប្រព័ន្ធគ្រប់គ្រងចរន្តឯកសារ (GDGA)')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+function doGet(e) {
+  try {
+    // === ដាក់កូដ/Logic របស់អ្នកនៅត្រង់នេះ ===
+    // ឧទាហរណ៍៖ អានទិន្នន័យ, ផ្ញើសារ Telegram, Update Google Sheet, κ.ល.
+    
+    var responseData = {
+      status: "success",
+      message: "Google Apps Script ត្រូវបានហៅមកដំណើរការដោយជោគជ័យ!",
+      timestamp: new Date().toLocaleString()
+    };
+
+    // បំប្លែងទិន្នន័យជា JSON ត្រឡប់ទៅវិញ
+    return ContentService.createTextOutput(JSON.stringify(responseData))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    var errorData = {
+      status: "error",
+      message: error.toString()
+    };
+    
+    return ContentService.createTextOutput(JSON.stringify(errorData))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 function uploadFileToDrive(fileData, priority, dateIn, timeIn) {
